@@ -1,0 +1,20 @@
+version: '2.1'
+services:
+
+  localstack:
+    image: localstack/localstack
+    ports:
+      - "4567-4584:4567-4584"
+      - "${PORT_WEB_UI-8888}:${PORT_WEB_UI-8888}"
+    environment:
+      - SERVICES=${SERVICES-sqs:4576,sns:4575,s3:4572}
+      - DEBUG=${DEBUG- }
+      - DATA_DIR=${DATA_DIR- }
+      - PORT_WEB_UI=${PORT_WEB_UI-8888}
+      - LAMBDA_EXECUTOR=${LAMBDA_EXECUTOR- }
+      - KINESIS_ERROR_PROBABILITY=${KINESIS_ERROR_PROBABILITY- }
+      - DOCKER_HOST=unix:///var/run/docker.sock
+    volumes:
+      - "${TMPDIR:-/tmp/localstack}:/tmp/localstack"
+#on mac run with TMPDIR=/private$TMPDIR docker-compose up
+# also checkout https://github.com/localstack/localstack/blob/master/docker-compose.yml
